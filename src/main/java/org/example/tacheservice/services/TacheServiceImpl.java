@@ -1,11 +1,13 @@
 package org.example.tacheservice.services;
 
-import lombok.RequiredArgsConstructor;
 //import org.example.tacheservice.clients.UserClient;
+import feign.FeignException;
 import org.example.tacheservice.dto.TacheDTO;
 
 //import org.example.tacheservice.dto.UserDTO;
+import org.example.tacheservice.dto.UserDTO;
 import org.example.tacheservice.entites.Tache;
+import org.example.tacheservice.feign.UserRestClient;
 import org.example.tacheservice.mapper.TacheMapper;
 import org.example.tacheservice.repositories.TacheRepository;
 import org.springframework.stereotype.Service;
@@ -18,23 +20,33 @@ import java.util.stream.Collectors;
 public class TacheServiceImpl implements TacheService {
     private final TacheRepository tacheRepository;
     private final TacheMapper tacheMapper;
-//    private final UserClient userClient;
+    private final UserRestClient userClient;
 
-    public TacheServiceImpl(TacheRepository tacheRepository, TacheMapper tacheMapper) {
+    public TacheServiceImpl(TacheRepository tacheRepository, TacheMapper tacheMapper, UserRestClient userClient) {
         this.tacheRepository = tacheRepository;
         this.tacheMapper = tacheMapper;
-//        this.userClient = userClient;
+
+        this.userClient = userClient;
     }
 
     @Override
     public TacheDTO createTache(TacheDTO tacheDTO) {
-//        UserDTO userDTO = userClient.getUser(tacheDTO.getUserUsername());
-//        if (userDTO == null) throw new RuntimeException("User not found");
+        if (tacheDTO.getIdUser() == null) {
+            throw new IllegalArgumentException("idUser is required to create a Tache");
+        }
+        UserDTO userDTO;
+        try {
+             userDTO = userClient.getUser(tacheDTO.getIdUser());
+        } catch (FeignException.NotFound e) {
+            throw new RuntimeException("User not found");
+        }
+        tacheDTO.setUser(userDTO);
         Tache tache = tacheMapper.tacheDtoToTache(tacheDTO);
         Tache savedTache = tacheRepository.save(tache);
 
         return tacheMapper.tacheToTacheDTO(savedTache);
     }
+
 
     @Override
     public List<TacheDTO> getAllTaches() {
@@ -45,7 +57,18 @@ public class TacheServiceImpl implements TacheService {
     public TacheDTO getTacheById(String id) {
        Tache tache = tacheRepository.findById(id).orElse(null);
        if (tache == null) throw new RuntimeException("Tache not found");
-       return tacheMapper.tacheToTacheDTO(tache);
+       TacheDTO tacheDTO = tacheMapper.tacheToTacheDTO(tache);
+        if (tacheDTO.getIdUser() == null) {
+            throw new IllegalArgumentException("idUser is required to create a Tache");
+        }
+        UserDTO userDTO;
+        try {
+            userDTO = userClient.getUser(tacheDTO.getIdUser());
+        } catch (FeignException.NotFound e) {
+            throw new RuntimeException("User not found");
+        }
+        tacheDTO.setUser(userDTO);
+        return tacheDTO;
     }
 
     @Override

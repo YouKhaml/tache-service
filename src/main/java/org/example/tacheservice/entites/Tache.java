@@ -33,11 +33,7 @@ public class Tache {
     List<String> tags = new ArrayList<>();
     private int niveauUrgence ;
     private LocalDateTime dateDerniereModification;
-
-
-
-//    private String userUsername ;
-
+    private Long idUser;
 
     public String getId() {
         return id;
@@ -47,13 +43,7 @@ public class Tache {
         this.id = id;
     }
 
-//    public String getUserUsername() {
-//        return userUsername;
-//    }
-//
-//    public void setUserUsername(String userUsername) {
-//        this.userUsername = userUsername;
-//    }
+
 
     public String getTitre() {
         return titre;
@@ -142,4 +132,12 @@ public class Tache {
     public void setDateDerniereModification(LocalDateTime dateDerniereModification) {
         this.dateDerniereModification = dateDerniereModification;
     }
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
+    }
+
 }

@@ -26,8 +26,12 @@ public class TacheDTO {
     List<String> tags = new ArrayList<>();
     private int niveauUrgence ;
     private LocalDateTime dateDerniereModification;
+    private Long idUser;
+    private UserDTO user;
 
-//    private String userUsername ;
+
+
+
 
     public String getId() { return id;}
 
@@ -121,11 +125,21 @@ public class TacheDTO {
         this.dateDerniereModification = dateDerniereModification;
     }
 
-//    public String getUserUsername() {
-//        return userUsername;
-//    }
-//
-//    public void setUserUsername(String userUsername) {
-//        this.userUsername = userUsername;
-//    }
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
+    }
+
+
 }
