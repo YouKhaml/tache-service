@@ -25,10 +25,10 @@ public class Tache {
     private String titre;
     private String description;
     private LocalDateTime dateDebut;
-    private LocalDate dateFin;
+    private LocalDateTime dateFin;
     private Priorite priorite;
     private StatutTache statut;
-    private boolean terminee;
+
     private String categorie;
     List<String> tags = new ArrayList<>();
     private int niveauUrgence ;
@@ -77,11 +77,11 @@ public class Tache {
         this.priorite = priorite;
     }
 
-    public LocalDate getDateFin() {
+    public LocalDateTime getDateFin() {
         return dateFin;
     }
 
-    public void setDateFin(LocalDate dateFin) {
+    public void setDateFin(LocalDateTime dateFin) {
         this.dateFin = dateFin;
     }
 
@@ -91,14 +91,6 @@ public class Tache {
 
     public void setStatut(StatutTache statut) {
         this.statut = statut;
-    }
-
-    public boolean isTerminee() {
-        return terminee;
-    }
-
-    public void setTerminee(boolean terminee) {
-        this.terminee = terminee;
     }
 
     public String getCategorie() {
