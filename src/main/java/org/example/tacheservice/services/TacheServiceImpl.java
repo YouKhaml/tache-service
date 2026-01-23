@@ -79,9 +79,12 @@ public class TacheServiceImpl implements TacheService {
                     if(tacheDTO.getCategorie() != null && !tacheDTO.getCategorie().isBlank()){
                         existingTache.setCategorie(tacheDTO.getCategorie());
                     }
+                    if (tacheDTO.getTags() != null) {
+                        existingTache.setTags(tacheDTO.getTags());
+                    }
 
                     existingTache.setNiveauUrgence(tacheDTO.getNiveauUrgence());
-                    existingTache.setTerminee(tacheDTO.isTerminee());
+
                     existingTache.setDateDerniereModification(LocalDateTime.now());
                     return tacheMapper.tacheToTacheDTO(tacheRepository.save(existingTache));
 
