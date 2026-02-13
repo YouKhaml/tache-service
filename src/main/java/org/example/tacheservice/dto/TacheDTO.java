@@ -1,6 +1,4 @@
 package org.example.tacheservice.dto;
-
-
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.example.tacheservice.enums.Priorite;
@@ -23,9 +21,20 @@ public class TacheDTO {
     private StatutTache statut;
 
     private String categorie;
-    List<String> tags = new ArrayList<>();
     private int niveauUrgence ;
-    private LocalDateTime dateDerniereModification;
+
+    // 🔥 CALCUL DYNAMIQUE (PAS EN BASE)
+    private boolean enRetard;
+
+    // =========================
+    // LOGIQUE MÉTIER
+    // =========================
+    public void calculerRetard() {
+        this.enRetard =
+                statut != StatutTache.TERMINEE
+                        && dateFin != null
+                        && dateFin.isBefore(LocalDateTime.now());
+    }
 
 //    private String userUsername ;
 
@@ -89,13 +98,6 @@ public class TacheDTO {
         this.categorie = categorie;
     }
 
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
 
     public int getNiveauUrgence() {
         return niveauUrgence;
@@ -105,13 +107,14 @@ public class TacheDTO {
         this.niveauUrgence = niveauUrgence;
     }
 
-    public LocalDateTime getDateDerniereModification() {
-        return dateDerniereModification;
+    public boolean isEnRetard() {
+        return enRetard;
     }
 
-    public void setDateDerniereModification(LocalDateTime dateDerniereModification) {
-        this.dateDerniereModification = dateDerniereModification;
+    public void setEnRetard(boolean enRetard) {
+        this.enRetard = enRetard;
     }
+
 
 //    public String getUserUsername() {
 //        return userUsername;

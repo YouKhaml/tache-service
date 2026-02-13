@@ -38,8 +38,13 @@ public class TacheServiceImpl implements TacheService {
 
     @Override
     public List<TacheDTO> getAllTaches() {
-        return tacheRepository.findAll().stream().map(tacheMapper::tacheToTacheDTO).collect(Collectors.toList());
+        return tacheRepository.findAll()
+                .stream()
+                .map(tacheMapper::tacheToTacheDTO)
+                .peek(TacheDTO::calculerRetard) // 🔥 LOGIQUE MÉTIER
+                .collect(Collectors.toList());
     }
+
 
     @Override
     public TacheDTO getTacheById(String id) {
@@ -79,13 +84,9 @@ public class TacheServiceImpl implements TacheService {
                     if(tacheDTO.getCategorie() != null && !tacheDTO.getCategorie().isBlank()){
                         existingTache.setCategorie(tacheDTO.getCategorie());
                     }
-                    if (tacheDTO.getTags() != null) {
-                        existingTache.setTags(tacheDTO.getTags());
-                    }
+
 
                     existingTache.setNiveauUrgence(tacheDTO.getNiveauUrgence());
-
-                    existingTache.setDateDerniereModification(LocalDateTime.now());
                     return tacheMapper.tacheToTacheDTO(tacheRepository.save(existingTache));
 
                 })

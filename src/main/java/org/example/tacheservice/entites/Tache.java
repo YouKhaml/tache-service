@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.example.tacheservice.enums.Priorite;
 import org.example.tacheservice.enums.StatutTache;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
@@ -30,10 +31,10 @@ public class Tache {
     private StatutTache statut;
 
     private String categorie;
-    List<String> tags = new ArrayList<>();
     private int niveauUrgence ;
-    private LocalDateTime dateDerniereModification;
 
+    @Transient
+    private boolean enRetard;
 
 
 //    private String userUsername ;
@@ -111,14 +112,6 @@ public class Tache {
         this.categorie = categorie;
     }
 
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
     public int getNiveauUrgence() {
         return niveauUrgence;
     }
@@ -127,11 +120,12 @@ public class Tache {
         this.niveauUrgence = niveauUrgence;
     }
 
-    public LocalDateTime getDateDerniereModification() {
-        return dateDerniereModification;
+
+    public boolean isEnRetard() {
+        return enRetard;
     }
 
-    public void setDateDerniereModification(LocalDateTime dateDerniereModification) {
-        this.dateDerniereModification = dateDerniereModification;
+    public void setEnRetard(boolean enRetard) {
+        this.enRetard = enRetard;
     }
 }
